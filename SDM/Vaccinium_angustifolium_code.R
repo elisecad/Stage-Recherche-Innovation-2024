@@ -46,7 +46,7 @@ sort(table(basisOfRecord), decreasing = TRUE) #table of types of records from th
 ......# ... = name of variable -> to see value of variable for each specimen 
 table(....)#....=variable name to make a summary table of the variable data 
 
---------------------------------------------------------------------
+#--------------------------------------------------------------------
 #Cleaning the data 
 
 library(CoordinateCleaner) 
@@ -141,7 +141,7 @@ abline(v=median(V0$year), col='red', lwd=3)
 
 hist(V0$year, breaks=100, main="Time distribution", xlab="Year", xlim=c(2025,1980), ylim=c(0,2500)) 
 
-----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 #Thinning occurences: get a single data point per predictor (raster cell) 
 
 library(tidyverse) 
@@ -178,7 +178,7 @@ V0<-spatSample(V0, size=1,
 
 saveRDS(V0, file = 'occ_thin_ang.Rdata') 
 
------------------------------------------------------------------
+#-----------------------------------------------------------------
 #Setting background area and predictor variables 
 
 library(tidyverse) 
@@ -303,7 +303,7 @@ ang_groups <- cutree(ang_clust, h = 1 - threshold) #calculate groupings of varia
 plot(ang_clust, hang = -1, main = "V. angustifolium Predictors") 
 rect.hclust(ang_clust, h = 1 - threshold) 
 
-------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------
 install.packages("rJava") 
 install.packages("predicts") 
 install.packages("ENMeval") 
@@ -1003,7 +1003,7 @@ terra::plot(ang_pred_ssp585_50.lcc > angPred_threshold_50, col = c(NA, 'darkoliv
 
 terra::plot(canUS_map.lcc, add = T) 
 
--------------------------------------------------------------
+#-------------------------------------------------------------
 #Calculate the area of high suitable habitats 
 SSP245-70<-freq(ang_pred_ssp245_70.lcc > angPred_threshold_50)
 SSP245-70$area<-p$count*5.135
