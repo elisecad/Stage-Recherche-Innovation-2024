@@ -1,4 +1,4 @@
-install.packages("tidyverse") # only for the first time  
+install.packages("tidyverse") 
 install.packages("rgbif") 
 install.packages("CoordinateCleaner") 
 install.packages("terra") 
@@ -14,12 +14,11 @@ getwd()#check your working directory
 
 #GBIF user info 
 
-user='elisecadiou' 
-pwd='RIstage2024!' 
-email='elise.cadiou@orange.fr' 
+user='Your username' 
+pwd='Your password' 
+email='Your email' 
 
 #find the taxon name 
-
 angus<-name_backbone('Vaccinium anfustifolium Aiton') 
 
 #download data 
@@ -47,6 +46,7 @@ sort(table(basisOfRecord), decreasing = TRUE) #table of types of records from th
 ......# ... = name of variable -> to see value of variable for each specimen 
 table(....)#....=variable name to make a summary table of the variable data 
 
+--------------------------------------------------------------------
 #Cleaning the data 
 
 library(CoordinateCleaner) 
@@ -178,6 +178,7 @@ V0<-spatSample(V0, size=1,
 
 saveRDS(V0, file = 'occ_thin_ang.Rdata') 
 
+-----------------------------------------------------------------
 #Setting background area and predictor variables 
 
 library(tidyverse) 
@@ -191,7 +192,6 @@ install.packages("plotly")
 library(plotly) 
 install.packages("MASS") #3D surface plots 
 library(MASS) 
-
 
 #Download NA ecoregion shapefile from: https://www.epa.gov/eco-research/ecoregions-north-america 
 
@@ -257,8 +257,7 @@ points(ang_bg_vec, cex = 0.01)
 #get the total area of raster in km² 
 
 expanse(wclim_ang[[1]], unit = 'km') 
-
-# 8 717 180 km² 
+#8 717 180 km² 
 
 #15000/8717180 
 #0.0017 samples/km 
@@ -304,61 +303,7 @@ ang_groups <- cutree(ang_clust, h = 1 - threshold) #calculate groupings of varia
 plot(ang_clust, hang = -1, main = "V. angustifolium Predictors") 
 rect.hclust(ang_clust, h = 1 - threshold) 
 
-
-# Predictor Kernel Density Plots-------------------------------------------
-
-# It is helpful to visualize two predictors pairs of presence points and background points 
-
-ang_occ.temp <- ang_sdmData %>% filter(ang_pb == 1) %>% # Presence points 
-  dplyr::select(wc2.1_2.5m_bio_1) %>% # Mean annual temp 
-  drop_na() %>%  
-  unlist() 
-
-ang_bg.temp <- ang_sdmData %>% filter(ang_pb == 0) %>% # Background points 
-  dplyr::select(wc2.1_2.5m_bio_1) %>% # Mean annual temp 
-  drop_na() %>%  
-  unlist() 
-
-ang_occ.perc <- ang_sdmData %>% filter(ang_pb == 1) %>% # Presence points 
-  dplyr::select(wc2.1_2.5m_bio_12) %>% # Annual precipitation 
-  drop_na() %>%  
-  unlist() 
-
-ang_bg.perc <- ang_sdmData %>% filter(ang_pb == 0) %>% # Background points 
-  dplyr::select(wc2.1_2.5m_bio_12) %>% # Annual precipitation 
-  drop_na() %>%  
-  unlist() 
-
-ang_occ.3d <- kde2d(ang_occ.temp, ang_occ.perc)
-ang_bg.3d <- kde2d(ang_bg.temp, ang_bg.perc) 
-
-#Plot 3D surface Kernel density estimation 
-
-plot_ang.occ_3d <- plot_ly(x=ang_occ.3d$x, y=ang_occ.3d$y, z=ang_occ.3d$z) %>%  
-  add_surface() %>%  
-  layout(scene = list(xaxis = list(title = 'Mean Annual Temp (C)', autotick = F, nticks = 5, tickvals = list(0,5,10,15,20)),  
-                      yaxis = list(title = 'Mean Annual Percip. (mm)', tick0=0, tick1=2000, dtick=200),  
-                      zaxis = list(title = 'Kernel Density', tick0=0, tick1=0.001, dtick=0.0002)), 
-         title = list(text = "<i>V. angustifolium<i> Occurrence Points",  
-                      y = 0.95, x = 0.5,  
-                      xanchor = 'center',  
-                      yanchor = 'top')) 
-
-plot_ang.occ_3d # run to view 
-
-plot_ang.bg_3d <- plot_ly(x=ang_bg.3d$x, y=ang_bg.3d$y, z=ang_bg.3d$z) %>%  
-  add_surface() %>%  
-  layout(scene = list(xaxis = list(title = 'Mean Annual Temp (C)', tick0=0, tick1=20, dtick=5),  
-                      yaxis = list(title = 'Mean Annual Percip. (mm)', tick0=0, tick1=2000, dtick=200),  
-                      zaxis = list(title = 'Kernel Density')), 
-         title = list(text = "<i>V. angustifolium<i> Background Points",  
-                      y = 0.95, x = 0.5,  
-                      xanchor = 'center',  
-                      yanchor = 'top')) 
-
-plot_ang.bg_3d 
-
-
+------------------------------------------------------------------------------------
 install.packages("rJava") 
 install.packages("predicts") 
 install.packages("ENMeval") 
@@ -413,7 +358,6 @@ wclim<-geodata::worldclim_global(var = 'bio',
     crop(NA_ext) #crop raster to NA 
 
 # SSP (Shared social-economic pathway) 2.45  
-
 # middle of the road projection, high climate adaptation, low climate mitigation 
 
 ssp245_2030 <- cmip6_world(model = "CanESM5", 
@@ -441,7 +385,6 @@ ssp245_2070 <- cmip6_world(model = "CanESM5",
   crop(NA_ext) #crop raster to NA 
 
 # SPP 5.85  
-
 # low regard for environmental sustainability, increased fossil fuel reliance, this is the current tracking projection 
 
 ssp585_2030 <- cmip6_world(model = "CanESM5", 
@@ -899,7 +842,6 @@ canUS_map_0.lcc <- project(canUS_map_0, projLam)
 
 occ_thin_ang.lcc <- project(occ_thin_ang, projLam) 
 
-
 # Habitat suitability 
 
 ang_pred_hist.lcc <- project(ang_pred_hist, projLam) 
@@ -1061,8 +1003,9 @@ terra::plot(ang_pred_ssp585_50.lcc > angPred_threshold_50, col = c(NA, 'darkoliv
 
 terra::plot(canUS_map.lcc, add = T) 
 
-
-
-p<-freq(ang_pred_ssp245_70.lcc > angPred_threshold_50)
-p$area<-p$count*5.135
-p
+-------------------------------------------------------------
+#Calculate the area of high suitable habitats 
+SSP245-70<-freq(ang_pred_ssp245_70.lcc > angPred_threshold_50)
+SSP245-70$area<-p$count*5.135
+SSP245-70
+#Repeat for each map
